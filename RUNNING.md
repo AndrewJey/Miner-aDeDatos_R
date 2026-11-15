@@ -22,3 +22,11 @@ Inventario y compilaciones locales del 2026-11-15. Una compilación correcta no 
 
 `.gitignore` excluye credenciales locales, estado del editor y salidas de las herramientas detectadas. No deja de versionar archivos que ya estaban en Git. Los manifiestos, archivos de bloqueo, recursos fuente y scripts de esquema forman parte del código.
 <!-- local-development:end -->
+
+<!-- platform-tools:start -->
+## Herramientas para otros componentes
+
+### R
+
+Prepara un intérprete R y las bibliotecas que importan los scripts. Ejecuta los análisis sobre copias de los datos; los resultados de compilación .NET de otros componentes no validan estos análisis.
+<!-- platform-tools:end -->
