@@ -1,6 +1,6 @@
 ---
 title: 'Agrupamiento '
-author: "Efrén Jiménez"
+author: "EfrÃ©n JimÃ©nez"
 date: "1 de setiembre de 2016"
 output: pdf_document
 ---
@@ -10,26 +10,29 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## Análisis del Problema
+## AnÃ¡lisis del Problema
 
-Entre los problemas más comunes que afectan a nuestra sociedad actualmente, están el sobrepeso y el colesterol alto. Estos problemas suelen generar otros problemas, como por ejemplo problemas cardiacos, hipertensión y diabetes. Debido a la alta propensidad de sufrir enfermedades, las personas con sobrepeso u obesas suelen ser un público "menos atractivo" para compañías de seguros, pues estos representan un riesgo mayor. Sin embargo, para compañías que se dediquen a vender productos para bajar de peso o para cadenas de gimnasios, pueden representar un público meta muy atractivo.
+Entre los problemas mÃ¡s comunes que afectan a nuestra sociedad actualmente, estÃ¡n el sobrepeso y el colesterol alto. Estos problemas suelen generar otros problemas, como por ejemplo problemas cardiacos, hipertensiÃ³n y diabetes. Debido a la alta propensidad de sufrir enfermedades, las personas con sobrepeso u obesas suelen ser un pÃºblico "menos atractivo" para compaÃ±Ã­as de seguros, pues estos representan un riesgo mayor. Sin embargo, para compaÃ±Ã­as que se dediquen a vender productos para bajar de peso o para cadenas de gimnasios, pueden representar un pÃºblico meta muy atractivo.
 
-Debido a estas consideraciones, un análisis de agrupamiento para encontrar personas con características de peso y colesterol similares puede ser útil desde ambas perspectivas: para una aseguradora puede representar cierto nivel de riesgo y puede preferir mantenerse alejado de algunos clientes, mientras que para gimnasios o compañías que ofrecen productos para mejorar la salud y bajar de peso pueden representar esos clientes sobre los cuales enfocarse.
+Debido a estas consideraciones, un anÃ¡lisis de agrupamiento para encontrar personas con caracterÃ­sticas de peso y colesterol similares puede ser Ãºtil desde ambas perspectivas: para una aseguradora puede representar cierto nivel de riesgo y puede preferir mantenerse alejado de algunos clientes, mientras que para gimnasios o compaÃ±Ã­as que ofrecen productos para mejorar la salud y bajar de peso pueden representar esos clientes sobre los cuales enfocarse.
 
 ## Entendimiento de los Datos
 
 Para intentar resolver este problema, se cuenta con un conjunto de datos con tres variables:
 
-- Peso: cuantitativa, mide el peso de cada observación.
-- Colesterol: cuantitativa, mide el nivel de colesterol de cada observación.
-- Género: cualitativa, 0 para representar a las mujeres y 1 para los hombres.
+- Peso: cuantitativa, mide el peso de cada observaciÃ³n.
+- Colesterol: cuantitativa, mide el nivel de colesterol de cada observaciÃ³n.
+- GÃ©nero: cualitativa, 0 para representar a las mujeres y 1 para los hombres.
 
-## Exploración de los Datos
+## ExploraciÃ³n de los Datos
 
 ```{r}
 library(cluster)
 
-setwd('D:\\Drive\\Universidad\\UTN\\2016\\III Cuatrimestre\\mineria_2016_III_cuatri\\Clase 12\\Agrupamiento')
+# Ruta portable: knitr usa la carpeta del documento .Rmd como directorio de trabajo
+if (!file.exists('datos.csv')) {
+  stop('No se encontrÃ³ datos.csv en el directorio actual: ', getwd())
+}
 
 datos <- read.csv('datos.csv')
 
@@ -40,56 +43,56 @@ datos$Cholesterol <- (datos$Cholesterol - min(datos$Cholesterol)) / (max(datos$C
 
 ```
 
-Luego de cargar los datos, podemos comparar la cantidad de observaciones que hay por género:
+Luego de cargar los datos, podemos comparar la cantidad de observaciones que hay por gÃ©nero:
 
 ```{r fig.height=3}
 barplot(table(datos$Gender),
-        main = 'Cantidad de observaciones por género',
-        xlab = 'Género (1 = hombres)',
+        main = 'Cantidad de observaciones por gÃ©nero',
+        xlab = 'GÃ©nero (1 = hombres)',
         ylab = 'Observaciones')
 
 ```
 
-En el gráfico anterior, se puede apreciar que hay una leve diferencia entre la cantidad de hombres y mujeres a favor de los hombres.
+En el grÃ¡fico anterior, se puede apreciar que hay una leve diferencia entre la cantidad de hombres y mujeres a favor de los hombres.
 
-Se puede analizar también la relación que hay entre las variables colesterol y peso:
+Se puede analizar tambiÃ©n la relaciÃ³n que hay entre las variables colesterol y peso:
 
 ```{r fig.height=3}
 plot(datos$Weight, 
      datos$Cholesterol,
-     main = 'Relación entre peso y colesterol',
+     main = 'RelaciÃ³n entre peso y colesterol',
      xlab = 'Peso',
      ylab = 'Colesterol')
 
 ```
 
-Como se puede apreciar, hay una relación casi lineal (hay una tendencia a formar un arco) entre ambas variables, y se puede sacar la conclusión que a mayor peso, mayor nivel de colesterol (y viceversa).
+Como se puede apreciar, hay una relaciÃ³n casi lineal (hay una tendencia a formar un arco) entre ambas variables, y se puede sacar la conclusiÃ³n que a mayor peso, mayor nivel de colesterol (y viceversa).
 
-Finalmente, podemos observar la distribución de peso por género:
+Finalmente, podemos observar la distribuciÃ³n de peso por gÃ©nero:
 
 ```{r fig.height=3.5}
 boxplot(datos$Weight ~ factor(datos$Gender), 
-     main = 'Relación entre peso y género',
+     main = 'RelaciÃ³n entre peso y gÃ©nero',
      xlab = 'Genero (1 = hombre)',
      ylab = 'Peso')
 
 ```
 
-y la distribución de colesterol por género:
+y la distribuciÃ³n de colesterol por gÃ©nero:
 
 ```{r fig.height=3.5}
 boxplot(datos$Cholesterol ~ factor(datos$Gender), 
-     main = 'Relación entre colesterol y género',
+     main = 'RelaciÃ³n entre colesterol y gÃ©nero',
      xlab = 'Genero (1 = hombre)',
      ylab = 'Colesterol')
 
 ```
 
-En estos dos gráficos se puede apreciar que en promedio ambos géneros están muy parecidos, pero los hombres tienden a tener mayor variabilidad en ambas variables (la caja es más ancha).
+En estos dos grÃ¡ficos se puede apreciar que en promedio ambos gÃ©neros estÃ¡n muy parecidos, pero los hombres tienden a tener mayor variabilidad en ambas variables (la caja es mÃ¡s ancha).
 
-## Creación del Modelo
+## CreaciÃ³n del Modelo
 
-Para determinar la cantidad de clústeres que se pueden crear, se procede a hacer un agrupamiento jerárquico:
+Para determinar la cantidad de clÃºsteres que se pueden crear, se procede a hacer un agrupamiento jerÃ¡rquico:
 
 ```{r fig.height=3}
 distancias <- dist(datos, method="euclidean")
@@ -100,7 +103,7 @@ plot(datos.jerarquico)
 
 ```
 
-Determinando las diferentes alturas, se pueden crear desde 2 grupos hasta 6. En realidad, ya la división en 5 ó 6 grupos es un poco "estrecha", pero definitiamente para más de 6 grupos la división es sumamente difícil de hacer. Para este análisis, vamos a utilizar 5
+Determinando las diferentes alturas, se pueden crear desde 2 grupos hasta 6. En realidad, ya la divisiÃ³n en 5 Ã³ 6 grupos es un poco "estrecha", pero definitiamente para mÃ¡s de 6 grupos la divisiÃ³n es sumamente difÃ­cil de hacer. Para este anÃ¡lisis, vamos a utilizar 5
 
 ```{r}
 plot(datos.jerarquico)
@@ -111,7 +114,7 @@ cluster.jerarquico <- factor(cutree(datos.jerarquico, k=5))
 
 ```
 
-Luego de hacer el análisis jerárquico, se procede a hacer el análisis utilizando el algoritmo KMeans con 5 centros:
+Luego de hacer el anÃ¡lisis jerÃ¡rquico, se procede a hacer el anÃ¡lisis utilizando el algoritmo KMeans con 5 centros:
 
 ```{r}
 set.seed(352345) #necesario para replicabilidad
@@ -121,10 +124,10 @@ cluster.kmeans <- factor(km$cluster)
 
 ```
 
-El resultado se puede visualizar así: (Los colores de los puntos representan el grupo al cual pertenecen)
+El resultado se puede visualizar asÃ­: (Los colores de los puntos representan el grupo al cual pertenecen)
 
 ```{r}
-#Visualizar los Clústeres
+#Visualizar los ClÃºsteres
 clusplot(datos, 
          km$cluster, 
          col.p = km$cluster,
@@ -132,11 +135,11 @@ clusplot(datos,
          shade=TRUE, 
          labels=2, 
          lines=0,
-         main = 'Visualización de los Clústeres')
+         main = 'VisualizaciÃ³n de los ClÃºsteres')
 
 ```
 
-## Evaluación
+## EvaluaciÃ³n
 
 Con el fin de comparar ambos agrupamientos, podemos generar tablas resumen para comparar los valores promedios de cada variable en cada grupo:
 
@@ -151,7 +154,7 @@ resultado.jerarquico
 
 ```
 
-Los grupos creados se pueden resumir así:
+Los grupos creados se pueden resumir asÃ­:
 
 - Grupo 1: Hombres con peso y colesterol bajo.
 - Grupo 2: Mujeres con peso y colesterol a nivel medio.
@@ -172,7 +175,7 @@ resultado.kmeans
 
 ```
 
-Los grupos creados se pueden resumir así:
+Los grupos creados se pueden resumir asÃ­:
 
 - Grupo 1: Mujeres con peso y colesterol alto.
 - Grupo 2: Mujeres con peso y colesterol medio.
@@ -182,6 +185,6 @@ Los grupos creados se pueden resumir así:
 
 ## Resultados
 
-De los resúmenes anteriores, podemos sacar la conclusión que con los datos de peso y colesterol normalizados, y con el género, independientemente del algoritmo de agrupamiento (jerárquico o KMeans), los resultados son basicamente los mismos. Si bien es cierto que el número de grupo puede variar, en general al dividir en 5 grupos vamos a tener 3 grupos para mujeres con diferentes niveles de peso y colesterol (alto - medio - bajo) y 2 grupos para los hombres con diferentes niveles de colesterol (alto - bajo).
+De los resÃºmenes anteriores, podemos sacar la conclusiÃ³n que con los datos de peso y colesterol normalizados, y con el gÃ©nero, independientemente del algoritmo de agrupamiento (jerÃ¡rquico o KMeans), los resultados son basicamente los mismos. Si bien es cierto que el nÃºmero de grupo puede variar, en general al dividir en 5 grupos vamos a tener 3 grupos para mujeres con diferentes niveles de peso y colesterol (alto - medio - bajo) y 2 grupos para los hombres con diferentes niveles de colesterol (alto - bajo).
 
-Ambos modelos dan resultados sumamente válidos para cualquiera de las dos perspectivas mencionadas en el análisis del problema.
+Ambos modelos dan resultados sumamente vÃ¡lidos para cualquiera de las dos perspectivas mencionadas en el anÃ¡lisis del problema.

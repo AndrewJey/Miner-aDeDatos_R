@@ -30,3 +30,11 @@ Inventario y compilaciones locales del 2026-11-15. Una compilación correcta no 
 
 Prepara un intérprete R y las bibliotecas que importan los scripts. Ejecuta los análisis sobre copias de los datos; los resultados de compilación .NET de otros componentes no validan estos análisis.
 <!-- platform-tools:end -->
+
+
+<!-- improvements-20261119:start -->
+## Mejoras y verificación — 2026-11-19 (Portabilidad de notebooks RMarkdown y limpieza SQL transaccional)
+
+- **Cambios:** Eliminadas rutas absolutas `D:\Drive\Universidad\...` en 4 archivos `.Rmd` reemplazándolas por verificación relativa portable; corregido typo `cly` -> `cyl` y codificación UTF-8 en `demo.R` y `Clase 7/demo.R`; envuelto `Clean.sql` en `BEGIN TRANSACTION`/`TRY..CATCH` con guardas `OBJECT_ID(...) IS NOT NULL`.
+- **Validación:** Auditoría automatizada de 12 scripts `.R`/`.Rmd` (0 rutas fijas `D:\Drive`, 0 typos `cly`) y validación estructural de `Clean.sql`.
+<!-- improvements-20261119:end -->

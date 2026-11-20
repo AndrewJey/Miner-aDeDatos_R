@@ -3,11 +3,11 @@ data=mtcars
 str(data)
 summary(data)
 
-dotchart(data$gear,main = "Exploración de la variable gear",
+dotchart(data$gear,main = "ExploraciÃ³n de la variable gear",
          xlab = "gear",ylab = "Observaciones")
 
-dotchart(data$cyl,main = "Exploración de la variable cly",
-         xlab = "cly",ylab = "Observaciones")
+dotchart(data$cyl,main = "ExploraciÃ³n de la variable cyl",
+         xlab = "cyl",ylab = "Observaciones")
 
 
 data$cyl=factor(data$cyl)
